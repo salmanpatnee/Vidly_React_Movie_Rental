@@ -1,12 +1,13 @@
 import React, { Component } from "react";
+import _ from 'lodash';
+
 import { getMovies } from "../services/fakeMovieService";
 import { getGenres } from "../services/fakeGenreService";
 
-import Like from "./common/Like";
+import MoviesTable from "./MoviesTable";
 import Pagination from "./common/Pagination";
 import ListGroup from "./common/ListGroup";
 import { paginate } from './../utils/paginate';
-import { genres } from './../services/fakeGenreService';
 
 class Movies extends Component {
   state = {
@@ -14,11 +15,12 @@ class Movies extends Component {
     genres: [],
     pageSize: 3,
     currentPage: 1,
-    selectedGenre: null
+    selectedGenre: null,
+    sortColumn: { column: 'title', order: 'asc' }
   };
 
   componentDidMount() {
-    const genres = [{ name: 'All Genres' }, ...getGenres()];
+    const genres = [{ _id: '', name: 'All Genres' }, ...getGenres()];
 
     this.setState({ genres, movies: getMovies() });
   }
@@ -45,17 +47,32 @@ class Movies extends Component {
     this.setState({ selectedGenre: genre, currentPage: 1 });
   }
 
+  handleSort = column => {
+    const sortColumn = { ...this.state.sortColumn };
+
+    if (sortColumn.column === column) {
+      sortColumn.order = (sortColumn.order === 'asc') ? 'desc' : 'asc';
+    } else {
+      sortColumn.column = column;
+      sortColumn.order = 'asc';
+    }
+
+    this.setState({ sortColumn });
+  }
+
   render() {
     const { length: count } = this.state.movies;
-    const { pageSize, currentPage, genres, selectedGenre, movies: allMovies } = this.state;
+    const { pageSize, currentPage, genres, selectedGenre, sortColumn, movies: allMovies } = this.state;
 
     if (count === 0) return <p>No movies</p>;
 
-    const filteredMovies = selectedGenre && selectedGenre._id
+    const filtered = selectedGenre && selectedGenre._id
       ? allMovies.filter(movie => movie.genre._id === selectedGenre._id)
       : allMovies;
 
-    const movies = paginate(filteredMovies, currentPage, pageSize);
+    const sorted = _.orderBy(filtered, [sortColumn.column], [sortColumn.order]);
+
+    const movies = paginate(sorted, currentPage, pageSize);
 
     return (
       <div className="row">
@@ -69,45 +86,15 @@ class Movies extends Component {
         </div>
         <div className="col">
           <h1>Movies</h1>
-          <p>Showing {filteredMovies.length} movies in the database.</p>
-          <table className="table">
-            <thead>
-              <tr>
-                <th scope="col">Title</th>
-                <th scope="col">Genre</th>
-                <th scope="col">Stock</th>
-                <th scope="col">Rate</th>
-                <th scope="col"></th>
-                <th scope="col"></th>
-              </tr>
-            </thead>
-            <tbody>
-              {movies.map((movie) => (
-                <tr key={movie._id}>
-                  <td>{movie.title}</td>
-                  <td>{movie.genre.name}</td>
-                  <td>{movie.numberInStock}</td>
-                  <td>{movie.dailyRentalRate}</td>
-                  <td>
-                    <Like
-                      liked={movie.liked}
-                      onClick={() => this.handleLike(movie)}
-                    />
-                  </td>
-                  <td>
-                    <button
-                      onClick={() => this.handleDelete(movie)}
-                      className="btn btn-danger btn-sm"
-                    >
-                      <i className="fa fa-trash"></i>
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <p>Showing {filtered.length} movies in the database.</p>
+          <MoviesTable
+            movies={movies}
+            onLike={this.handleLike}
+            onDelete={this.handleDelete}
+            onSort={this.handleSort}
+          />
           <Pagination
-            itemsCount={filteredMovies.length}
+            itemsCount={filtered.length}
             pageSize={pageSize}
             onPageChange={this.handlePageChange}
             currentPage={currentPage}
