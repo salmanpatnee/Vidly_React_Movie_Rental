@@ -6,6 +6,7 @@ import Movie from "./components/Movie";
 import Customers from "./components/Customers";
 import Rentals from "./components/Rentals";
 import NotFound from "./components/NotFound";
+import LoginForm from "./components/LoginForm";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Navbar />
       <main className="mt-4 container">
         <Routes>
+          <Route path="/login" element={<LoginForm />} />
           <Route path="/movies" element={<Movies />} />
           <Route path="/movies/:id" element={<Movie />} />
           <Route path="/customers" element={<Customers />} />
