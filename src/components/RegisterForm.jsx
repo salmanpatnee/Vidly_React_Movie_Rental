@@ -2,15 +2,16 @@ import React, { Component } from 'react';
 import Joi from 'joi-browser';
 import Form from './common/Form';
 
-class LoginForm extends Form {
+class RegisterForm extends Form {
     state = {
-        data: { username: "", password: "" },
+        data: { username: "", password: "", name: "" },
         errors: {}
     }
 
     schema = {
-        username: Joi.string().required().label('Username'),
-        password: Joi.string().required().label('Password')
+        username: Joi.string().email().required().label('Username'),
+        password: Joi.string().min(5).required().label('Password'),
+        name: Joi.string().required().label('Name'),
     };
 
     doSubmit = () => {
@@ -23,11 +24,12 @@ class LoginForm extends Form {
             <div className="row">
                 <div className="col-3"></div>
                 <div className="col">
-                    <h2>Login</h2>
+                    <h2>Register</h2>
                     <form onSubmit={this.handleSubmit}>
-                        {this.renderInput('username', 'Username')}
+                        {this.renderInput('username', 'Username', 'email')}
                         {this.renderInput('password', 'Password', 'password')}
-                        {this.renderButton()}
+                        {this.renderInput('name', 'Name', 'name')}
+                        {this.renderButton('Register')}
                     </form>
                 </div>
                 <div className="col-3"></div>
@@ -36,4 +38,4 @@ class LoginForm extends Form {
     }
 }
 
-export default LoginForm;
+export default RegisterForm;
