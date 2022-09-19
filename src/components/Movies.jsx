@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import _ from 'lodash';
+import { Link } from "react-router-dom";
 
 import { getMovies } from "../services/fakeMovieService";
 import { getGenres } from "../services/fakeGenreService";
@@ -75,7 +76,6 @@ class Movies extends Component {
     return (
       <div className="row">
         <div className="col-3">
-          <h1>Genres</h1>
           <ListGroup
             items={genres}
             selectedItem={selectedGenre}
@@ -83,8 +83,10 @@ class Movies extends Component {
           />
         </div>
         <div className="col">
-          <h1>Movies</h1>
-          <p>Showing {totalCount} movies in the database.</p>
+          <Link className="btn btn-primary" to="/movies/new">
+            Add Movie
+          </Link>
+          <p className="mt-3">Showing {totalCount} movies in the database.</p>
           <MoviesTable
             movies={movies}
             sortColumn={sortColumn}
