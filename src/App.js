@@ -20,7 +20,8 @@ function App() {
           <Route path="/login" element={<LoginForm />} />
           <Route path="/movies/new" element={<MovieForm />} />
           <Route path="/movies" element={<Movies />} />
-          <Route path="/movies/:id" element={<Movie />} />
+          <Route path="/movies/:id" element={<MovieForm />} />
+          {/* <Route path="/movies/:id" element={<Movie />} /> */}
           <Route path="/customers" element={<Customers />} />
           <Route path="/rentals" element={<Rentals />} />
           <Route path="/" element={<Navigate to="/movies" replace />} />

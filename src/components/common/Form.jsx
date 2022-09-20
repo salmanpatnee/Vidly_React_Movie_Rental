@@ -73,7 +73,7 @@ class Form extends Component {
         )
     }
 
-    renderDropdown = (name, label, items, text = "name", value = "_id") => {
+    renderDropdown = (name, label, items, selectedItem, text = "name", value = "_id") => {
         const { errors } = this.state;
 
         return (
@@ -81,6 +81,7 @@ class Form extends Component {
                 name={name}
                 label={label}
                 items={items}
+                selectedItem={selectedItem}
                 text={text}
                 value={value}
                 error={errors[name]}
