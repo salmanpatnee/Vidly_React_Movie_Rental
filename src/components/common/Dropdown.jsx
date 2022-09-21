@@ -7,6 +7,7 @@ const Dropdown = ({ name, label, items, selectedItem, error, value, text, ...res
             <select name={name} id={name} className="form-control"  {...rest}>
                 {items.map(item => (
                     <option
+                        selected={item[value] === selectedItem}
                         key={item[value]}
                         value={item[value]}>
                         {item[text]}
