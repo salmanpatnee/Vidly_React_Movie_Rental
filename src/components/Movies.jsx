@@ -1,15 +1,19 @@
 import React, { Component } from "react";
-import _ from 'lodash';
+import _ from "lodash";
 import { Link } from "react-router-dom";
 
-import { getMovies } from "../services/fakeMovieService";
-import { getGenres } from "../services/fakeGenreService";
+import { getMovies } from "../services/MovieService";
+import { getGenres } from "../services/GenreService";
 
 import MoviesTable from "./MoviesTable";
 import Pagination from "./common/Pagination";
 import ListGroup from "./common/ListGroup";
+<<<<<<< HEAD
 import SearchBox from "./common/SearchBox";
 import { paginate } from './../utils/paginate';
+=======
+import { paginate } from "./../utils/paginate";
+>>>>>>> b1d98d786f836130fa43cf49fb4a1494ff6091ea
 
 class Movies extends Component {
   state = {
@@ -19,13 +23,15 @@ class Movies extends Component {
     currentPage: 1,
     searchQuery: "",
     selectedGenre: null,
-    sortColumn: { column: 'title', order: 'asc' }
+    sortColumn: { column: "title", order: "asc" },
   };
 
-  componentDidMount() {
-    const genres = [{ _id: '', name: 'All Genres' }, ...getGenres()];
+  async componentDidMount() {
+    const { data: allGenres } = await getGenres();
+    const genres = [{ _id: "", name: "All Genres" }, ...allGenres.data];
 
-    this.setState({ genres, movies: getMovies() });
+    const { data: allMovies } = await getMovies();
+    this.setState({ genres, movies: allMovies.data });
   }
 
   handleDelete = (movie) => {
@@ -41,16 +47,38 @@ class Movies extends Component {
     this.setState({ movies });
   };
 
-  handlePageChange = page => {
+  handlePageChange = (page) => {
     this.setState({ currentPage: page });
-  }
+  };
 
+<<<<<<< HEAD
   handleGenreSelect = genre => {
     this.setState({ searchQuery: "", selectedGenre: genre, currentPage: 1, });
   }
+=======
+  handleGenreSelect = (genre) => {
+    this.setState({ selectedGenre: genre, currentPage: 1 });
+  };
+>>>>>>> b1d98d786f836130fa43cf49fb4a1494ff6091ea
 
-  handleSort = sortColumn => {
+  handleSort = (sortColumn) => {
     this.setState({ sortColumn });
+  };
+
+  handleSearch = (e) => {
+    let query = e.target.value.toLowerCase();
+
+    const movies = this.state.movies.filter((m) =>
+      Object.values(m).some((val) => val.includes(query))
+    );
+
+    console.log(movies);
+  };
+  get handleSearch() {
+    return this._handleSearch;
+  }
+  set handleSearch(value) {
+    this._handleSearch = value;
   }
 
   handleSearch = searchQuery => {
@@ -58,6 +86,7 @@ class Movies extends Component {
   }
 
   getPagedData = () => {
+<<<<<<< HEAD
     const { pageSize, currentPage, selectedGenre, sortColumn, movies: allMovies, searchQuery } = this.state;
 
     let filtered = allMovies;
@@ -68,17 +97,36 @@ class Movies extends Component {
     else if (selectedGenre && selectedGenre._id)
       filtered = allMovies.filter(movie =>
         movie.genre._id === selectedGenre._id)
+=======
+    const {
+      pageSize,
+      currentPage,
+      selectedGenre,
+      sortColumn,
+      movies: allMovies,
+    } = this.state;
+
+    const filtered =
+      selectedGenre && selectedGenre._id
+        ? allMovies.filter((movie) => movie.genre._id === selectedGenre._id)
+        : allMovies;
+>>>>>>> b1d98d786f836130fa43cf49fb4a1494ff6091ea
 
     const sorted = _.orderBy(filtered, [sortColumn.column], [sortColumn.order]);
 
     const movies = paginate(sorted, currentPage, pageSize);
 
     return { totalCount: filtered.length, data: movies };
-  }
+  };
 
   render() {
     const { length: count } = this.state.movies;
+<<<<<<< HEAD
     const { pageSize, currentPage, genres, selectedGenre, sortColumn, searchQuery } = this.state;
+=======
+    const { pageSize, currentPage, genres, selectedGenre, sortColumn } =
+      this.state;
+>>>>>>> b1d98d786f836130fa43cf49fb4a1494ff6091ea
 
     if (count === 0) return <p>No movies</p>;
 
@@ -102,6 +150,14 @@ class Movies extends Component {
             onChange={this.handleSearch}
           />
           <p className="mt-3">Showing {totalCount} movies in the database.</p>
+          <div className="form-group">
+            <input
+              type="search"
+              className="form-control"
+              placeholder="Search Movie"
+              onChange={this.handleSearch}
+            ></input>
+          </div>
           <MoviesTable
             movies={movies}
             sortColumn={sortColumn}
@@ -116,7 +172,6 @@ class Movies extends Component {
             currentPage={currentPage}
           />
         </div>
-
       </div>
     );
   }
