@@ -16,6 +16,9 @@ axios.interceptors.response.use(null, (error) => {
   return Promise.reject(error);
 });
 
+// axios.defaults.baseURL = import.meta.env.API_BASE_URL;
+axios.defaults.baseURL = "http://vidly-backend.test/api";
+
 const methods = {
   get: axios.get,
   post: axios.post,

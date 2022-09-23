@@ -33,10 +33,9 @@ const Dropdown = ({
   return (
     <div className="form-group">
       <label htmlFor={name}>{label}</label>
-      <select name={name} id={name} className="form-control" {...rest}>
+      <select name={name} id={name} defaultValue={selectedItem} className="form-control" {...rest}>
         {items.map((item) => (
           <option
-            selected={item[value] == selectedItem}
             key={item[value]}
             value={item[value]}
           >
