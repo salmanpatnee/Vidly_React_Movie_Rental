@@ -8,12 +8,8 @@ import { getGenres } from "../services/GenreService";
 import MoviesTable from "./MoviesTable";
 import Pagination from "./common/Pagination";
 import ListGroup from "./common/ListGroup";
-<<<<<<< HEAD
 import SearchBox from "./common/SearchBox";
-import { paginate } from './../utils/paginate';
-=======
 import { paginate } from "./../utils/paginate";
->>>>>>> b1d98d786f836130fa43cf49fb4a1494ff6091ea
 
 class Movies extends Component {
   state = {
@@ -42,7 +38,7 @@ class Movies extends Component {
     this.setState({ movies });
 
     try {
-      await deleteMovie(movie._id)
+      await deleteMovie(movie._id);
     } catch (error) {
       if (error.response && error.response.status === 404)
         toast.error("This movie has already been deleted.");
@@ -63,15 +59,9 @@ class Movies extends Component {
     this.setState({ currentPage: page });
   };
 
-<<<<<<< HEAD
-  handleGenreSelect = genre => {
-    this.setState({ searchQuery: "", selectedGenre: genre, currentPage: 1, });
-  }
-=======
   handleGenreSelect = (genre) => {
-    this.setState({ selectedGenre: genre, currentPage: 1 });
+    this.setState({ searchQuery: "", selectedGenre: genre, currentPage: 1 });
   };
->>>>>>> b1d98d786f836130fa43cf49fb4a1494ff6091ea
 
   handleSort = (sortColumn) => {
     this.setState({ sortColumn });
@@ -93,36 +83,30 @@ class Movies extends Component {
     this._handleSearch = value;
   }
 
-  handleSearch = searchQuery => {
+  handleSearch = (searchQuery) => {
     this.setState({ searchQuery, selectedGenre: null, currentPage: 1 });
-  }
+  };
 
   getPagedData = () => {
-<<<<<<< HEAD
-    const { pageSize, currentPage, selectedGenre, sortColumn, movies: allMovies, searchQuery } = this.state;
-
-    let filtered = allMovies;
-
-    if (searchQuery)
-      filtered = allMovies.filter(movie =>
-        movie.title.toLowerCase().startsWith(searchQuery.toLowerCase()));
-    else if (selectedGenre && selectedGenre._id)
-      filtered = allMovies.filter(movie =>
-        movie.genre._id === selectedGenre._id)
-=======
     const {
       pageSize,
       currentPage,
       selectedGenre,
       sortColumn,
       movies: allMovies,
+      searchQuery,
     } = this.state;
 
-    const filtered =
-      selectedGenre && selectedGenre._id
-        ? allMovies.filter((movie) => movie.genre._id === selectedGenre._id)
-        : allMovies;
->>>>>>> b1d98d786f836130fa43cf49fb4a1494ff6091ea
+    let filtered = allMovies;
+
+    if (searchQuery)
+      filtered = allMovies.filter((movie) =>
+        movie.title.toLowerCase().startsWith(searchQuery.toLowerCase())
+      );
+    else if (selectedGenre && selectedGenre._id)
+      filtered = allMovies.filter(
+        (movie) => movie.genre._id === selectedGenre._id
+      );
 
     const sorted = _.orderBy(filtered, [sortColumn.column], [sortColumn.order]);
 
@@ -133,12 +117,14 @@ class Movies extends Component {
 
   render() {
     const { length: count } = this.state.movies;
-<<<<<<< HEAD
-    const { pageSize, currentPage, genres, selectedGenre, sortColumn, searchQuery } = this.state;
-=======
-    const { pageSize, currentPage, genres, selectedGenre, sortColumn } =
-      this.state;
->>>>>>> b1d98d786f836130fa43cf49fb4a1494ff6091ea
+    const {
+      pageSize,
+      currentPage,
+      genres,
+      selectedGenre,
+      sortColumn,
+      searchQuery,
+    } = this.state;
 
     if (count === 0) return <p>No movies</p>;
 
@@ -157,10 +143,7 @@ class Movies extends Component {
           <Link className="btn btn-primary" to="/movies/new">
             Add Movie
           </Link>
-          <SearchBox
-            value={searchQuery}
-            onChange={this.handleSearch}
-          />
+          <SearchBox value={searchQuery} onChange={this.handleSearch} />
           <p className="mt-3">Showing {totalCount} movies in the database.</p>
           <div className="form-group">
             <input
