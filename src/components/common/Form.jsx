@@ -1,103 +1,109 @@
-import React, { Component } from 'react';
-import Joi from 'joi-browser';
-import Input from './Input';
-import Dropdown from './Dropdown';
+import React, { Component } from "react";
+import Joi from "joi-browser";
+import Input from "./Input";
+import Dropdown from "./Dropdown";
 
 class Form extends Component {
+  state = {
+    data: {},
+    errors: {},
+  };
 
-    state = {
-        data: {},
-        errors: {}
-    }
+  validate = () => {
+    const options = { abortEarly: false };
 
-    validate = () => {
+    const { error } = Joi.validate(this.state.data, this.schema, options);
 
-        const options = { abortEarly: false };
+    if (!error) return null;
 
-        const { error } = Joi.validate(this.state.data, this.schema, options);
+    const errors = {};
 
-        if (!error) return null;
+    for (let item of error.details) errors[item.path[0]] = item.message;
 
-        const errors = {};
+    return errors;
+  };
 
-        for (let item of error.details) errors[item.path[0]] = item.message;
+  validateProperty = ({ name, value }) => {
+    const property = { [name]: value };
+    const schema = { [name]: this.schema[name] };
+    const { error } = Joi.validate(property, schema);
 
-        return errors;
-    }
+    return error ? error.details[0].message : null;
+  };
 
-    validateProperty = ({ name, value }) => {
+  handleChange = ({ currentTarget: input }) => {
+    const errors = { ...this.state.errors };
+    const errorMessage = this.validateProperty(input);
 
-        const property = { [name]: value };
-        const schema = { [name]: this.schema[name] };
-        const { error } = Joi.validate(property, schema);
+    if (errorMessage) errors[input.name] = errorMessage;
+    else delete errors[input.name];
 
-        return error ? error.details[0].message : null;
-    }
+    const data = { ...this.state.data };
 
-    handleChange = ({ currentTarget: input }) => {
+    data[input.name] = input.value;
+    this.setState({ data, errors });
+  };
 
-        const errors = { ...this.state.errors };
-        const errorMessage = this.validateProperty(input);
+  handleSubmit = (e) => {
+    e.preventDefault();
 
-        if (errorMessage) errors[input.name] = errorMessage;
-        else delete errors[input.name];
+    const errors = this.validate();
+    this.setState({ errors: errors || {} });
 
-        const data = { ...this.state.data };
+    if (errors) return;
 
-        data[input.name] = input.value;
-        this.setState({ data, errors });
-    }
+    this.doSubmit();
+  };
 
-    handleSubmit = (e) => {
-        e.preventDefault();
+  renderInput = (name, label, type = "text") => {
+    const { data, errors } = this.state;
+    return (
+      <Input
+        type={type}
+        name={name}
+        label={label}
+        value={data[name]}
+        error={errors[name]}
+        onChange={this.handleChange}
+      />
+    );
+  };
 
-        const errors = this.validate();
-        this.setState({ errors: errors || {} });
+  renderDropdown = (
+    name,
+    label,
+    items,
+    selectedItem,
+    text = "name",
+    value = "_id"
+  ) => {
+    const { errors } = this.state;
 
-        if (errors) return;
+    return (
+      <Dropdown
+        name={name}
+        label={label}
+        items={items}
+        selectedItem={selectedItem}
+        text={text}
+        value={value}
+        error={errors[name]}
+        onChange={this.handleChange}
+      />
+    );
+  };
 
-        this.doSubmit();
-    }
-
-    renderInput = (name, label, type = 'text') => {
-        const { data, errors } = this.state;
-        return (
-            <Input
-                type={type}
-                name={name}
-                label={label}
-                value={data[name]}
-                error={errors[name]}
-                onChange={this.handleChange}
-            />
-        )
-    }
-
-    renderDropdown = (name, label, items, selectedItem, text = "name", value = "_id") => {
-        const { errors } = this.state;
-
-        return (
-            <Dropdown
-                name={name}
-                label={label}
-                items={items}
-                selectedItem={selectedItem}
-                text={text}
-                value={value}
-                error={errors[name]}
-                onChange={this.handleChange}
-            />
-        )
-    }
-
-    renderButton = (label = "Submit") => {
-        return (<button
-            disabled={this.validate()}
-            type="submit"
-            className="btn btn-primary">
-            {label}
-        </button>)
-    }
+  renderButton = (label = "Submit") => {
+    return (
+      <button
+        disabled={this.validate()}
+        type="submit"
+        className="btn btn-primary"
+      >
+        {label}
+      </button>
+    );
+  };
 }
 
 export default Form;

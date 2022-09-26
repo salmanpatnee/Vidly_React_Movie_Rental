@@ -7,16 +7,16 @@ import { saveMovie, getMovie } from "../services/MovieService";
 
 class MovieForm extends Form {
   state = {
-    id: "",
+    // id: "",
     data: { title: "", genre_id: "", numberInStock: "", dailyRentalRate: "" },
     errors: {},
     genres: [],
   };
 
   schema = {
-    _id: Joi.string(),
+    _id: Joi.number(),
     title: Joi.string().required().label("Title"),
-    genre_id: Joi.string().required().label("Genre"),
+    genre_id: Joi.number().required().label("Genre"),
     numberInStock: Joi.number()
       .min(1)
       .max(100)
