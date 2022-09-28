@@ -9,3 +9,10 @@ export function register(user) {
     password: user.password,
   });
 }
+
+export function login(email, password) {
+  return http.post("/login", {
+    email,
+    password,
+  });
+}
