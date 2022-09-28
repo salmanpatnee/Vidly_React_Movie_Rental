@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import Joi from "joi-browser";
 import Form from "./common/Form";
 import { login } from "../services/AuthService";
+import { toast } from "react-toastify";
+import { WithRouter } from "../utils/WithRouter";
 
 class LoginForm extends Form {
   state = {
@@ -17,24 +19,15 @@ class LoginForm extends Form {
   doSubmit = async () => {
     try {
       const { data } = this.state;
-      const { data: response } = await login(data.username, data.password);
+      const response = await login(data.username, data.password);
 
-      if (response.status_code === 401) {
-        const errors = { ...this.state.errors };
-        errors.username = response.message;
-        this.setState({ errors });
-      } else if (response.status_code === 500) {
-        const errors = { ...this.state.errors };
-        errors.username = response.message;
-        this.setState({ errors });
+      if (response.status_code === 200) {
+        localStorage.setItem("access_token", response.access_token);
+        toast.success("Logged in.");
+        this.props.navigate("/movies", { replace: true });
       }
     } catch (error) {
-      console.log(error);
-      if (error.response && error.response.status === 500) {
-        const errors = { ...this.state.errors };
-        errors.username = error.response.data.message;
-        this.setState({ errors });
-      }
+      toast.error("Error while login.");
     }
   };
 
@@ -56,4 +49,4 @@ class LoginForm extends Form {
   }
 }
 
-export default LoginForm;
+export default WithRouter(LoginForm);
