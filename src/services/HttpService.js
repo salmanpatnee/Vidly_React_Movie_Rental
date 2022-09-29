@@ -17,7 +17,9 @@ axios.interceptors.response.use(null, (error) => {
 });
 
 // axios.defaults.baseURL = import.meta.env.API_BASE_URL;
-axios.defaults.baseURL = "http://vidly.test:8012/api";
+// axios.defaults.baseURL = "http://vidly-backend.test";
+axios.defaults.baseURL = "http://127.0.0.1:8000/";
+
 
 const methods = {
   get: axios.get,

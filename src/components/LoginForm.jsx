@@ -19,18 +19,15 @@ class LoginForm extends Form {
       const { data } = this.state;
       const { data: response } = await login(data.username, data.password);
 
-      if (response.status_code === 401) {
-        const errors = { ...this.state.errors };
-        errors.username = response.message;
-        this.setState({ errors });
-      } else if (response.status_code === 500) {
+      console.log(response);
+
+      if (response.status_code !== 200) {
         const errors = { ...this.state.errors };
         errors.username = response.message;
         this.setState({ errors });
       }
     } catch (error) {
-      console.log(error);
-      if (error.response && error.response.status === 500) {
+      if (error.response && error.response.status === 400) {
         const errors = { ...this.state.errors };
         errors.username = error.response.data.message;
         this.setState({ errors });
