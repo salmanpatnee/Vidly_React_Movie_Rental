@@ -1,6 +1,6 @@
 import axios from "axios";
-import { toast } from "react-toastify";
 import logger from "./LogService";
+import { toast } from "react-toastify";
 
 axios.interceptors.response.use(null, (error) => {
   const expectedError =
@@ -16,8 +16,11 @@ axios.interceptors.response.use(null, (error) => {
   return Promise.reject(error);
 });
 
+function setToken(token) {
+  axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+}
+
 // axios.defaults.baseURL = import.meta.env.API_BASE_URL;
-// axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem("access_token");
 
 axios.defaults.baseURL = "http://vidly.test:8012";
 axios.defaults.withCredentials = true;
@@ -29,6 +32,7 @@ const methods = {
   post: axios.post,
   put: axios.put,
   delete: axios.delete,
+  setToken,
 };
 
 export default methods;

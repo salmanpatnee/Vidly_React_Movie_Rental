@@ -3,6 +3,8 @@ import http from "./HttpService";
 const tokenKey = "access_token";
 const authUserKey = "auth_user";
 
+http.setToken(getToken());
+
 export async function register(user) {
   const { data } = await http.post("/api/register", {
     name: user.name,
@@ -46,6 +48,10 @@ export function getCurrrentUser() {
 export function logout() {
   localStorage.removeItem(tokenKey);
   localStorage.removeItem(authUserKey);
+}
+
+export function getToken() {
+  return localStorage.getItem(tokenKey);
 }
 
 export default {
