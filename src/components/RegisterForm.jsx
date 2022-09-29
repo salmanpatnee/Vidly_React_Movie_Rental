@@ -2,8 +2,7 @@ import React from "react";
 import Joi from "joi-browser";
 import Form from "./common/Form";
 import { toast } from "react-toastify";
-import { register, getUser } from "../services/AuthService";
-import { WithRouter } from "../utils/WithRouter";
+import auth from "../services/AuthService";
 
 class RegisterForm extends Form {
   state = {
@@ -19,20 +18,9 @@ class RegisterForm extends Form {
 
   doSubmit = async () => {
     try {
-      const {data: response} = await register(this.state.data);
-      localStorage.setItem("access_token", response.access_token);
-
-      const headers = {headers: 
-        {'Authorization': `Bearer ${response.access_token}`}
-      };
-      const {data: user} = await getUser(headers);
-
-      localStorage.setItem("auth_user", JSON.stringify(user));
-
+      await auth.register(this.state.data);
+      toast.success("Sign up succefully.");
       window.location = "/";
-
-      toast.success(response.message);
-
     } catch (error) {
       if (error.response && error.response.status === 422) {
         const errors = { ...this.state.errors };
@@ -61,4 +49,4 @@ class RegisterForm extends Form {
   }
 }
 
-export default WithRouter(RegisterForm);
+export default RegisterForm;

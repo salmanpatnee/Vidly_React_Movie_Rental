@@ -1,16 +1,15 @@
-import React, { Component } from 'react';
-class Logout extends Component { 
-    
-    componentDidMount() {
-        localStorage.removeItem("access_token");    
-        localStorage.removeItem("auth_user");    
+import React, { Component } from "react";
+import auth from "../services/AuthService";
 
-        window.location = "/";
-    }
+class Logout extends Component {
+  componentDidMount() {
+    auth.logout();
+    window.location = "/";
+  }
 
-    render() { 
-        return null;
-    }
+  render() {
+    return null;
+  }
 }
- 
+
 export default Logout;

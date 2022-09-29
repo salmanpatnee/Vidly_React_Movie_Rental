@@ -1,7 +1,7 @@
-import React, { Component } from "react";
+import React from "react";
 import Joi from "joi-browser";
 import Form from "./common/Form";
-import { login, getUser } from "../services/AuthService";
+import auth from "../services/AuthService";
 import { toast } from "react-toastify";
 import { WithRouter } from "../utils/WithRouter";
 
@@ -19,32 +19,16 @@ class LoginForm extends Form {
   doSubmit = async () => {
     try {
       const { data } = this.state;
-      const {data: response} = await login(data.username, data.password);
-      
-      if (response.status_code === 200) { 
+      await auth.login(data.username, data.password);
 
-        localStorage.setItem("access_token", response.access_token);
+      toast.success("Logged in.");
 
-        const headers = {headers: {
-'Authorization': `Bearer ${response.access_token}`
-          }
-        }
-        const {data: user} = await getUser();
-
-        localStorage.setItem("auth_user", JSON.stringify(user));
-
-        toast.success("Logged in.");
-
-        window.location = "/";
-
-      } else {
-        const errors = { ...this.state.errors };
-        errors.username = response.message;
-        this.setState({ errors });
-      }
-
+      window.location = "/";
     } catch (error) {
-      toast.error("Error while login.");
+      // const errors = { ...this.state.errors };
+      // errors.username = response.message;
+      // this.setState({ errors });
+      toast.error(error.response.data.message);
     }
   };
 

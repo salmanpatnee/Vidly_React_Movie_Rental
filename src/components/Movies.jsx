@@ -73,8 +73,6 @@ class Movies extends Component {
     const movies = this.state.movies.filter((m) =>
       Object.values(m).some((val) => val.includes(query))
     );
-
-    console.log(movies);
   };
   get handleSearch() {
     return this._handleSearch;
@@ -145,7 +143,7 @@ class Movies extends Component {
           </Link>
           <SearchBox value={searchQuery} onChange={this.handleSearch} />
           <p className="mt-3">Showing {totalCount} movies in the database.</p>
-          
+
           <MoviesTable
             movies={movies}
             sortColumn={sortColumn}
