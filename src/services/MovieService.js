@@ -20,9 +20,7 @@ export function saveMovie(movie) {
   }
 
   return http.post(apiEndpoint, movie);
-
 }
-
 
 export function deleteMovie(id) {
   return http.delete(movieUrl(id));

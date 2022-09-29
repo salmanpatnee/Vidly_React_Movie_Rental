@@ -145,14 +145,7 @@ class Movies extends Component {
           </Link>
           <SearchBox value={searchQuery} onChange={this.handleSearch} />
           <p className="mt-3">Showing {totalCount} movies in the database.</p>
-          <div className="form-group">
-            <input
-              type="search"
-              className="form-control"
-              placeholder="Search Movie"
-              onChange={this.handleSearch}
-            ></input>
-          </div>
+          
           <MoviesTable
             movies={movies}
             sortColumn={sortColumn}

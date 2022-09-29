@@ -1,22 +1,25 @@
 import http from "./HttpService";
 
-const apiEndpoint = "/users";
-
 export function register(user) {
 
-  return http.post(apiEndpoint, {
+  return http.post("/api/register", {
     name: user.name,
     email: user.username,
     password: user.password,
   });
+
 }
 
-export function login(email, password) {
-
+export async function login(email, password) {
   http.get("/sanctum/csrf-cookie");
+  
+  const response =  http.post("/api/login", { email, password });
 
-  return http.post("/login", {
-    email,
-    password,
-  });
+  console.log(response);
+  return;
 }
+
+export function getUser(headers) {
+  return http.get("/api/user", headers);
+}
+
