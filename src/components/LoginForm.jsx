@@ -4,6 +4,7 @@ import Form from "./common/Form";
 import auth from "../services/AuthService";
 import { toast } from "react-toastify";
 import { WithRouter } from "../utils/WithRouter";
+import { useLocation } from 'react-router-dom';
 
 class LoginForm extends Form {
   state = {
@@ -15,6 +16,11 @@ class LoginForm extends Form {
     username: Joi.string().email().required().label("Username"),
     password: Joi.string().required().label("Password"),
   };
+
+  componentDidMount() {
+    console.log(this.props);
+
+  }
 
   doSubmit = async () => {
     try {

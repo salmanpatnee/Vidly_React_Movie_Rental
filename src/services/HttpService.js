@@ -22,7 +22,7 @@ function setToken(token) {
 
 // axios.defaults.baseURL = import.meta.env.API_BASE_URL;
 
-axios.defaults.baseURL = "http://vidly.test:8012";
+axios.defaults.baseURL = "http://vidly-backend.test"; 
 axios.defaults.withCredentials = true;
 axios.defaults.headers.post["Content-Type"] = "application/json";
 axios.defaults.headers.post["Accept"] = "application/json";

@@ -13,6 +13,7 @@ import Logout from "./components/Logout";
 import MovieForm from "./components/MovieForm";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
+import ProtectedRoute from './components/common/ProtectedRoute';
 
 class App extends Component {
   state = {};
@@ -23,18 +24,31 @@ class App extends Component {
   }
 
   render() {
+    const {user} = this.state;
     return (
       <>
         <ToastContainer />
-        <Navbar user={this.state.user} />
+        <Navbar user={user} />
         <main className="mt-4 container">
           <Routes>
             <Route path="/register" element={<RegisterForm />} />
             <Route path="/login" element={<LoginForm />} />
             <Route path="/logout" element={<Logout />} />
-            <Route path="/movies/new" element={<MovieForm />} />
-            <Route path="/movies" element={<Movies />} />
-            <Route path="/movies/:id" element={<MovieForm />} />
+
+            <Route path="/movies/new" element={
+                <ProtectedRoute>
+                  <MovieForm />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="/movies" element={<Movies user={user}/>} />
+            <Route path="/movies/:id" element={
+                <ProtectedRoute>
+                  <MovieForm />
+                </ProtectedRoute>
+              }
+            />
+            
             <Route path="/customers" element={<Customers />} />
             <Route path="/rentals" element={<Rentals />} />
             <Route path="/" element={<Navigate to="/movies" replace />} />
