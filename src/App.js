@@ -4,8 +4,7 @@ import auth from "./services/AuthService";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Navbar from "./components/common/Navbar";
 import Movies from "./components/Movies";
-import Customers from "./components/Customers";
-import Rentals from "./components/Rentals";
+import Customers from "./pages/customers/Customers";
 import NotFound from "./components/NotFound";
 import LoginForm from "./components/LoginForm";
 import RegisterForm from "./components/RegisterForm";
@@ -50,7 +49,6 @@ class App extends Component {
             />
             
             <Route path="/customers" element={<Customers />} />
-            <Route path="/rentals" element={<Rentals />} />
             <Route path="/" element={<Navigate to="/movies" replace />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

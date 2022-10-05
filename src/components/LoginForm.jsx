@@ -5,7 +5,7 @@ import auth from "../services/AuthService";
 import { toast } from "react-toastify";
 import { WithRouter } from "../utils/WithRouter";
 import { useLocation } from 'react-router-dom';
-
+  
 class LoginForm extends Form {
   state = {
     data: { username: "", password: "" },

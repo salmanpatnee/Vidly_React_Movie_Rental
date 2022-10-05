@@ -31,11 +31,6 @@ const Navbar = ({user}) => {
                 Customers
               </NavLink>
             </li>
-            <li className="nav-item">
-              <NavLink className="nav-link" to="/rentals">
-                Rentals
-              </NavLink>
-            </li>
 
         {!user && 
         <><li className="nav-item">
