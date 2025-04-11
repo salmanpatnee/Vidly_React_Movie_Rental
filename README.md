@@ -5,6 +5,65 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ## Available Scripts
 
 In the project directory, you can run:
+# 🎬 Vidly - React Movie Rental App
+
+A React frontend application built during a course by Mosh Hamedani. It features full CRUD operations for managing movies, customers, and rentals — ideal for learning React fundamentals.
+
+---
+
+## ✨ Features
+
+- 🎞️ Browse, search, and filter movies.
+- 🧾 Sort and paginate movie lists.
+- ✅ Like, delete, and manage movie records.
+- 🔐 Login system with form validation.
+- 🧪 Client-side routing and form handling.
+
+---
+
+## 🚀 Getting Started
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/salmanpatnee/Vidly_React_Movie_Rental.git
+cd Vidly_React_Movie_Rental
+```
+
+### 2. Install dependencies
+
+```bash
+npm install
+```
+
+### 3. Run the application
+
+```bash
+npm start
+```
+
+---
+
+## 🛠️ Tech Stack
+
+- ⚛️ React
+- 🧰 Bootstrap for styling
+- 🧪 Joi for validation
+- 🔄 React Router
+
+---
+
+## 📄 License
+
+MIT License
+
+---
+
+## 👤 Author
+
+**Salman Patnee**  
+- GitHub: [@salmanpatnee](https://github.com/salmanpatnee)
+
 
 ### `npm start`
 
